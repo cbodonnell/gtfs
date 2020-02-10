@@ -39,7 +39,7 @@ def fmtPytz(pytz, fmt):
 
 
 def main():
-    gtfs_dataframes = zipToDataframes('data/njt_bus_gtfs_20200128.zip')
+    gtfs_dataframes = zipToDataframes('sample-feed.zip')
     agency = gtfs_dataframes['agency']
     routes = gtfs_dataframes['routes']
     agency_routes = agency.join(
@@ -53,28 +53,28 @@ def main():
         on='route_id'
     )
     print(routes_trips)
-    route_94_trips = routes_trips.loc[routes_trips['route_short_name'] == '94']
+    # route_94_trips = routes_trips.loc[routes_trips['route_short_name'] == '94']
     stop_times = gtfs_dataframes['stop_times']
-    route_94_trips_stop_times = route_94_trips.join(
-        stop_times.set_index('trip_id'),
-        on='trip_id'
-    )
-    print(route_94_trips_stop_times)
-    route_94_trips_stop_times['arrival_time'] = route_94_trips_stop_times.apply(
-        lambda x: fmtPytz(timeToPytz(x['arrival_time'], x['agency_timezone']), '%Y-%m-%d %H:%M:%S %Z%z'),
-        axis=1
-    )
-    route_94_trips_stop_times['departure_time'] = route_94_trips_stop_times.apply(
-        lambda x: fmtPytz(timeToPytz(x['departure_time'], x['agency_timezone']), '%Y-%m-%d %H:%M:%S %Z%z'),
-        axis=1
-    )
-    print(route_94_trips_stop_times)
-    stops = gtfs_dataframes['stops']
-    route_94_trips_stops = route_94_trips_stop_times.join(
-        stops.set_index('stop_id'),
-        on='stop_id'
-    )
-    print(route_94_trips_stops)
+    # route_94_trips_stop_times = route_94_trips.join(
+    #     stop_times.set_index('trip_id'),
+    #     on='trip_id'
+    # )
+    # print(route_94_trips_stop_times)
+    # route_94_trips_stop_times['arrival_time'] = route_94_trips_stop_times.apply(
+    #     lambda x: fmtPytz(timeToPytz(x['arrival_time'], x['agency_timezone']), '%Y-%m-%d %H:%M:%S %Z%z'),
+    #     axis=1
+    # )
+    # route_94_trips_stop_times['departure_time'] = route_94_trips_stop_times.apply(
+    #     lambda x: fmtPytz(timeToPytz(x['departure_time'], x['agency_timezone']), '%Y-%m-%d %H:%M:%S %Z%z'),
+    #     axis=1
+    # )
+    # print(route_94_trips_stop_times)
+    # stops = gtfs_dataframes['stops']
+    # route_94_trips_stops = route_94_trips_stop_times.join(
+    #     stops.set_index('stop_id'),
+    #     on='stop_id'
+    # )
+    # print(route_94_trips_stops)
     trips_stop_times = routes_trips.join(
         stop_times.set_index('trip_id'),
         on='trip_id'
